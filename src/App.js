@@ -1,5 +1,10 @@
+const dotenv = require("dotenv").config();
+
+if (dotenv.error) {
+  console.log(dotenv.error);
+}
+
 const express = require("express");
-const dotenv = require("dotenv/config");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 const cors = require("cors");
 const passport = require("passport");
@@ -19,10 +24,22 @@ class App {
   }
 
   setPortNumber() {
-    this.port = parseInt(process.env.PORT);
+    this.portHttp = parseInt(process.env.PORT_HTTP);
+    this.portHttps = parseInt(process.env.PORT_HTTPS);
   }
 
   initializeMiddlewares() {
+    this.app.enable('trust proxy');
+
+    // MM: it's copypaste form https://docs.divio.com/en/latest/how-to/node-express-force-https/?fbclid=IwAR3B0RaRCnjlBzQdfpMua0cqmVdddkhRehrpjP_M98H81XriiFLiQ0BnbPo
+    // api works without this middleware but I leave it here in case it will turn out that it is important
+    // this.app.use((req, res, next) => {
+    //   if (process.env.NODE_ENV != 'development' && !req.secure) {
+    //      return res.redirect("https://" + req.headers.host + req.url);
+    //   }
+    //   next();
+    // });
+
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
 
@@ -71,12 +88,13 @@ class App {
   }
 
   listen() {
-    https.createServer({
-      key: fs.readFileSync('server.key'),
-      cert: fs.readFileSync('server.cert')
-    }, this.app)
-    .listen(this.port, () => {
-      console.log(`app listening on the port ${this.port}`);
+    this.app.listen(this.portHttp, () => {
+      console.log(`app listening via http on the port ${this.portHttp}`);
+    });
+
+    https.createServer(this.app)
+    .listen(this.portHttps, () => {
+      console.log(`app listening via https on the port ${this.portHttps}`);
     });
   }
 }
