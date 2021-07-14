@@ -5,12 +5,15 @@
   "main": "./src/server.js",
   "scripts": {
     "start": "nodemon --exec babel-node src/server.js",
-    "test": "mocha ./tests/ --exit"
+    "test": "mocha ./tests/ --exit",
+    "prettier": "prettier --check src/**/*.js",
+    "eslint": "eslint ."
   },
   "author": "malina",
   "license": "ISC",
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "babel-eslint": "^10.1.0",
     "connect-mongo": "^4.4.1",
     "cors": "^2.8.5",
     "date-fns": "^2.17.0",
@@ -21,14 +24,16 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^5.0.1",
+    "prettier": "^2.3.2",
     "supertest": "^6.1.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",
     "@babel/node": "^7.2.2",
-    "nodemon": "^1.18.10",
     "chai": "^4.3.4",
-    "mocha": "^8.3.2"
+    "eslint": "^7.30.0",
+    "mocha": "^8.3.2",
+    "nodemon": "^1.18.10"
   }
 }
