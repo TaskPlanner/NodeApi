@@ -10,8 +10,8 @@ const cors = require("cors");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const session = require("express-session");
-const fs = require('fs');
-const https = require('https');
+const fs = require("fs");
+const https = require("https");
 
 class App {
   constructor(repo, controllers) {
@@ -29,7 +29,7 @@ class App {
   }
 
   initializeMiddlewares() {
-    this.app.enable('trust proxy');
+    this.app.enable("trust proxy");
 
     // MM: it's copypaste form https://docs.divio.com/en/latest/how-to/node-express-force-https/?fbclid=IwAR3B0RaRCnjlBzQdfpMua0cqmVdddkhRehrpjP_M98H81XriiFLiQ0BnbPo
     // api works without this middleware but I leave it here in case it will turn out that it is important
@@ -43,11 +43,13 @@ class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
 
-    this.app.use(cors({
-      origin: true, // true means that any origin is allowed, if we deploy application on server it should be changed to specific origin
-      methods: ['GET', 'PUT', 'POST', 'DELETE'],
-      credentials: true,
-    }));
+    this.app.use(
+      cors({
+        origin: true, // true means that any origin is allowed, if we deploy application on server it should be changed to specific origin
+        methods: ["GET", "PUT", "POST", "DELETE"],
+        credentials: true,
+      })
+    );
 
     this.app.use(
       session({
@@ -65,17 +67,17 @@ class App {
         // }),
       })
     );
-    
+
     this.app.use(passport.initialize());
     this.app.use(passport.session());
 
     const userAuthentication = this.repository.getAuthenticationFunctions();
-    
+
     passport.use(new LocalStrategy(userAuthentication.authenticate()));
     passport.serializeUser(userAuthentication.serializeUser());
     passport.deserializeUser(userAuthentication.deserializeUser());
-}
-        
+  }
+
   initializeControllers(controllers) {
     controllers.forEach((controller) => {
       this.app.use("/", controller.router);
@@ -92,8 +94,7 @@ class App {
       console.log(`app listening via http on the port ${this.portHttp}`);
     });
 
-    https.createServer(this.app)
-    .listen(this.portHttps, () => {
+    https.createServer(this.app).listen(this.portHttps, () => {
       console.log(`app listening via https on the port ${this.portHttps}`);
     });
   }

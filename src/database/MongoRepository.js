@@ -55,7 +55,8 @@ class MongoRepository {
   }
 
   findUserByUsername = async (username) => {
-    return userDocument.findOne({username: username})
+    return userDocument
+      .findOne({ username: username })
       .then((result) => {
         if (!result) {
           throw new UserDoesNotExist();
@@ -67,22 +68,23 @@ class MongoRepository {
       .catch((err) => {
         throw err;
       });
-  }
+  };
 
-  findElementByUserId = async (userId) => elementDocument.find({userId: userId});
+  findElementByUserId = async (userId) =>
+    elementDocument.find({ userId: userId });
 
-  addElement = async (element, callback) => elementDocument(element).save(callback);
+  addElement = async (element, callback) =>
+    elementDocument(element).save(callback);
 
   findOneElement = async (conditions) => elementDocument.findOne(conditions);
 
   findOneElementAndUpdate = async (conditions, element, options) => {
     return elementDocument.findOneAndUpdate(conditions, element, options);
-  }
+  };
 
   findOneElementAndDelete = async (conditions) => {
     return elementDocument.findOneAndDelete(conditions);
-  }
-
+  };
 }
 
 module.exports = MongoRepository;

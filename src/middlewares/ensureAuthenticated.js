@@ -6,6 +6,6 @@ ensureAuthenticated = async (req, res, next) => {
   } else {
     next(new UserNotAuthenticated());
   }
-}
+};
 
 module.exports = ensureAuthenticated;

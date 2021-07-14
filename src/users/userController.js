@@ -41,12 +41,12 @@ module.exports = class UserController {
         return res.send(user);
       });
     })(req, res, next);
-  }
+  };
 
   logout = async (req, res) => {
     req.logout();
     res.sendStatus(200);
-  }
+  };
 
   register = async (req, res, next) => {
     const callback = (err) => {
@@ -63,5 +63,5 @@ module.exports = class UserController {
       req.body.password,
       callback
     );
-  }
+  };
 };
