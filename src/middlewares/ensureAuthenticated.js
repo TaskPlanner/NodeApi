@@ -1,6 +1,6 @@
 const UserNotAuthenticated = require("../exceptions/UserNotAuthenticated");
 
-ensureAuthenticated = async (req, res, next) => {
+const ensureAuthenticated = async (req, res, next) => {
   if (req.isAuthenticated()) {
     next();
   } else {

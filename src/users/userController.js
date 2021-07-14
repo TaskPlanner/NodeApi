@@ -25,6 +25,7 @@ module.exports = class UserController {
   }
 
   login = async (req, res, next) => {
+    // eslint-disable-next-line no-unused-vars
     passport.authenticate("local", (err, user, info) => {
       // console.log(user);
       // console.log(info);

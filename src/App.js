@@ -10,7 +10,6 @@ const cors = require("cors");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const session = require("express-session");
-const fs = require("fs");
 const https = require("https");
 
 class App {
@@ -24,6 +23,7 @@ class App {
   }
 
   setPortNumber() {
+    /* eslint-disable no-undef, no-console */
     this.portHttp = parseInt(process.env.PORT_HTTP);
     this.portHttps = parseInt(process.env.PORT_HTTPS);
   }
@@ -54,6 +54,7 @@ class App {
     this.app.use(
       session({
         secret: process.env.SESSION_SECRET,
+        /* eslint-enable no-undef, no-console */
         resave: false, // if true forces the session to be saved back to the session store, even if the session was never modified during the request
         saveUninitialized: true, // forces a session that is “uninitialized” to be saved to the store. A session is uninitialized when it is new but not modified
         cookie: {
