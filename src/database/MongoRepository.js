@@ -10,12 +10,14 @@ class MongoRepository {
 
   connectToRemoteDatabase() {
     mongoose
+      /* eslint-disable no-undef, no-console */
       .connect(process.env.DATABASE_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useFindAndModify: false,
         useCreateIndex: true,
       })
+      // eslint-disable-next-line no-unused-vars
       .then((data) => {})
       .catch((err) =>
         console.log(
@@ -28,6 +30,7 @@ class MongoRepository {
     connection.once("open", () => {
       console.log(
         `connected to the database at URL: ${process.env.DATABASE_URL}`
+        /* eslint-enable no-undef, no-console */
       );
     });
   }
@@ -48,6 +51,7 @@ class MongoRepository {
     userDocument.register(
       new userDocument({ username: name }),
       password,
+      // eslint-disable-next-line no-unused-vars
       (err, user) => {
         callback(err);
       }
@@ -55,7 +59,8 @@ class MongoRepository {
   }
 
   findUserByUsername = async (username) => {
-    return userDocument.findOne({username: username})
+    return userDocument
+      .findOne({ username: username })
       .then((result) => {
         if (!result) {
           throw new UserDoesNotExist();
@@ -67,22 +72,23 @@ class MongoRepository {
       .catch((err) => {
         throw err;
       });
-  }
+  };
 
-  findElementByUserId = async (userId) => elementDocument.find({userId: userId});
+  findElementByUserId = async (userId) =>
+    elementDocument.find({ userId: userId });
 
-  addElement = async (element, callback) => elementDocument(element).save(callback);
+  addElement = async (element, callback) =>
+    elementDocument(element).save(callback);
 
   findOneElement = async (conditions) => elementDocument.findOne(conditions);
 
   findOneElementAndUpdate = async (conditions, element, options) => {
     return elementDocument.findOneAndUpdate(conditions, element, options);
-  }
+  };
 
   findOneElementAndDelete = async (conditions) => {
     return elementDocument.findOneAndDelete(conditions);
-  }
-
+  };
 }
 
 module.exports = MongoRepository;

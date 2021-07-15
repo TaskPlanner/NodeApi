@@ -25,6 +25,7 @@ module.exports = class UserController {
   }
 
   login = async (req, res, next) => {
+    // eslint-disable-next-line no-unused-vars
     passport.authenticate("local", (err, user, info) => {
       // console.log(user);
       // console.log(info);
@@ -41,12 +42,12 @@ module.exports = class UserController {
         return res.send(user);
       });
     })(req, res, next);
-  }
+  };
 
   logout = async (req, res) => {
     req.logout();
     res.sendStatus(200);
-  }
+  };
 
   register = async (req, res, next) => {
     const callback = (err) => {
@@ -63,5 +64,5 @@ module.exports = class UserController {
       req.body.password,
       callback
     );
-  }
+  };
 };

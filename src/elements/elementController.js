@@ -35,12 +35,13 @@ module.exports = class ElementController {
         }
       });
     });
-  }
+  };
 
   getUserElements = async (req, res, next) => {
     this.getAuthenticatedUserId(req, res)
       .then((userId) => {
-        this.repository.findElementByUserId(userId)
+        this.repository
+          .findElementByUserId(userId)
           .then((results) => {
             //console.log(results);
             res.send(results);
@@ -52,7 +53,7 @@ module.exports = class ElementController {
       .catch((err) => {
         next(err);
       });
-  }
+  };
 
   addElement = async (req, res, next) => {
     this.getAuthenticatedUserId(req, res)
@@ -72,15 +73,16 @@ module.exports = class ElementController {
       .catch((err) => {
         next(err);
       });
-  }
+  };
 
   getElement = async (req, res, next) => {
     this.getAuthenticatedUserId(req, res)
       .then((userId) => {
-        this.repository.findOneElement({_id: req.params.elementId, userId: userId})
+        this.repository
+          .findOneElement({ _id: req.params.elementId, userId: userId })
           .then((result) => {
             if (!result) {
-                next(new ElementDoesNotExist());
+              next(new ElementDoesNotExist());
             } else {
               res.send(result);
             }
@@ -89,48 +91,51 @@ module.exports = class ElementController {
       .catch((err) => {
         next(err);
       });
-  }
+  };
 
   updateElement = async (req, res, next) => {
     this.getAuthenticatedUserId(req, res)
-    .then((userId) => {
-      this.repository.findOneElementAndUpdate(
-        {_id: req.params.elementId, userId: userId},
-        req.body,
-        {new: true}
-      )
-        .then((updatedElement) => {
-          //console.log(updatedElement);
-          if (updatedElement) {
-            res.send(updatedElement);
-          } else {
-            next(new ElementNotUpdated());
-          }
-        });
+      .then((userId) => {
+        this.repository
+          .findOneElementAndUpdate(
+            { _id: req.params.elementId, userId: userId },
+            req.body,
+            { new: true }
+          )
+          .then((updatedElement) => {
+            //console.log(updatedElement);
+            if (updatedElement) {
+              res.send(updatedElement);
+            } else {
+              next(new ElementNotUpdated());
+            }
+          });
       })
       .catch((err) => {
         next(err);
       });
-  }
+  };
 
   deleteElement = async (req, res, next) => {
     this.getAuthenticatedUserId(req, res)
-    .then((userId) => {
-      this.repository.findOneElementAndDelete(
-        {_id: req.params.elementId, userId: userId}
-      )
-        .then((result) => {
-          if (!result) {
-            next(new ElementDoesNotExist());
-          } else {
+      .then((userId) => {
+        this.repository
+          .findOneElementAndDelete({
+            _id: req.params.elementId,
+            userId: userId,
+          })
+          .then((result) => {
+            if (!result) {
+              next(new ElementDoesNotExist());
+            } else {
               res.sendStatus(200);
-          }
-        });
-    })
-    .catch((err) => {
-      next(err);
-    });
-  }
+            }
+          });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  };
 
   setRepository(repo) {
     this.repository = repo;
