@@ -1,11 +1,13 @@
 const mongoose = require("mongoose");
 const userDocument = require("../models/userModel");
 const elementDocument = require("../models/elementModel");
-const UserDoesNotExist = require("../exceptions/UserDoesNotExist");
+const projectDocument = require("../models/projectModel");
+const ObjectNotExist = require("../exceptions/ObjectNotExist");
 
 class MongoRepository {
   constructor() {
     this.connectToRemoteDatabase();
+    this.initializeDocuments();
   }
 
   connectToRemoteDatabase() {
@@ -63,9 +65,8 @@ class MongoRepository {
       .findOne({ username: username })
       .then((result) => {
         if (!result) {
-          throw new UserDoesNotExist();
+          throw new ObjectNotExist("user");
         } else {
-          //console.log(result);
           return result._id;
         }
       })
@@ -74,20 +75,24 @@ class MongoRepository {
       });
   };
 
-  findElementByUserId = async (userId) =>
-    elementDocument.find({ userId: userId });
+  initializeDocuments = () => {
+    this.elements = elementDocument;
+  }
 
-  addElement = async (element, callback) =>
-    elementDocument(element).save(callback);
+  findAllByUserId = async (type, userId) =>
+    this[type].find({ userId: userId });
 
-  findOneElement = async (conditions) => elementDocument.findOne(conditions);
+  addOne = async (type, object, callback) =>
+    this[type](object).save(callback);
 
-  findOneElementAndUpdate = async (conditions, element, options) => {
-    return elementDocument.findOneAndUpdate(conditions, element, options);
+  findOne = async (type, conditions) => this[type].findOne(conditions);
+
+  findOneAndUpdate = async (type, conditions, object, options) => {
+    return this[type].findOneAndUpdate(conditions, object, options);
   };
 
-  findOneElementAndDelete = async (conditions) => {
-    return elementDocument.findOneAndDelete(conditions);
+  findOneAndDelete = async (type, conditions) => {
+    return this[type].findOneAndDelete(conditions);
   };
 }
 
