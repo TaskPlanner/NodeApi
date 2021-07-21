@@ -59,7 +59,7 @@ class App {
         saveUninitialized: true, // forces a session that is “uninitialized” to be saved to the store. A session is uninitialized when it is new but not modified
         cookie: {
           sameSite: "none",
-          secure: true,
+          secure: true, // false for tests on localhost
         },
         // it's possible to store sessions in the database, but it's opional (idk what is default store)
         // reqiures import const MongoStore = require('connect-mongo');

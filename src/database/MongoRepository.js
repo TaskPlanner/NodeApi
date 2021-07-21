@@ -77,13 +77,12 @@ class MongoRepository {
 
   initializeDocuments = () => {
     this.elements = elementDocument;
-  }
+    this.projects = projectDocument;
+  };
 
-  findAllByUserId = async (type, userId) =>
-    this[type].find({ userId: userId });
+  findAllByUserId = async (type, userId) => this[type].find({ userId: userId });
 
-  addOne = async (type, object, callback) =>
-    this[type](object).save(callback);
+  addOne = async (type, object, callback) => this[type](object).save(callback);
 
   findOne = async (type, conditions) => this[type].findOne(conditions);
 

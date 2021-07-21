@@ -58,7 +58,10 @@ module.exports = class BaseController {
     this.getAuthenticatedUserId(req, res)
       .then((userId) => {
         this.repository
-          .findOne(this.type, { _id: req.params[this.reqParamNames.id], userId: userId })
+          .findOne(this.type, {
+            _id: req.params[this.reqParamNames.id],
+            userId: userId,
+          })
           .then((result) => {
             if (!result) {
               next(new ObjectNotExist(this.name));
