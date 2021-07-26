@@ -1,11 +1,11 @@
 const BaseController = require("../baseController");
 const express = require("express");
 
-module.exports = class ElementController extends BaseController {
+module.exports = class ProjectController extends BaseController {
   constructor() {
-    super("elements", "element", { id: "elementId" });
+    super("projects", "project", { id: "projectId" });
 
-    this.path = "/elements";
+    this.path = "/projects";
     this.router = express.Router();
 
     this.initializeRoutes();
@@ -15,7 +15,7 @@ module.exports = class ElementController extends BaseController {
     this.router.route(this.path).get(this.getAll).post(this.addOne);
 
     this.router
-      .route(`${this.path}/:elementId`)
+      .route(`${this.path}/:projectId`)
       .get(this.getOne)
       .put(this.updateOne)
       .delete(this.deleteOne);
