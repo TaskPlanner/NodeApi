@@ -1,4 +1,4 @@
-# TaskPlanner NodeApi
+# Task Planner NodeApi
 
 ## Requirements
 * Node
